@@ -1,35 +1,28 @@
 <?php
 $login = $password = '';
-$successAuth = $failureAuth = '';
+$successAuth = $failureAuth = false;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $loginErr = $passwordErr = '';
-    if (empty($_POST['login'])) {
-        $loginErr = 'Необходим логин';
-    } else {
+    if (isset($_POST['login'])) {
         $login = test_input($_POST['login']);
     }
-    if (empty($_POST['password'])) {
-        $passwordErr = 'Необходим пароль';
-    } else {
+    if (isset($_POST['password'])) {
         $password = test_input($_POST['password']);
     }
-
-    if (!$loginErr && !$passwordErr) {
-        if (checkAuth($login, $password)) {
-            $successAuth = require_once $_SERVER['DOCUMENT_ROOT'] . '/include/successAuth.php';
-            $login = $password = '';
-        } else {
-            $failureAuth = require_once $_SERVER['DOCUMENT_ROOT'] . '/include/failureAuth.php';
-        }
+    $successAuth = checkAuth($login, $password);
+    if ($successAuth) {
+        $login = $password = '';
+    } else {
+        $failureAuth =  true;
     }
 }
 
 function checkAuth($login, $password)
 {
     $loginStore = require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/loginStore.php';
-    if (in_array($login, $loginStore)) {
-        $passwordStore = require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/passwordStore.php';
-        if (isset($passwordStore[$login]) && $password === $passwordStore[$login]) {
+    $passwordStore = require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/passwordStore.php';
+    foreach ($loginStore as $index => $item) {
+        if ($login === $item && $password === $passwordStore[$index]) {
             return true;
         }
     }
@@ -89,10 +82,10 @@ function test_input($data)
                           cellspacing="0"
                           cellpadding="0">
                         Ваш логин: <input type="text"
-                                           id="auth_login"
-                                           name="login"
-                                           size="30"
-                                           value="<?= $login; ?>">
+                                          id="auth_login"
+                                          name="login"
+                                          size="30"
+                                          value="<?= $login; ?>">
                         <?php if ($loginErr): ?>
                             <span class="error"> <?= $loginErr ?></span>
                         <?php endif; ?>
@@ -108,10 +101,10 @@ function test_input($data)
                         <br><br>
                         <input type="submit" name="submit" value="Войти">
                         <?php if ($successAuth): ?>
-                            <p class="success"><?= $successAuth ?></p>
+                            <p class="success"><?php include $_SERVER['DOCUMENT_ROOT'] . '/include/successAuth.php'; ?></p>
                         <?php endif; ?>
                         <?php if ($failureAuth): ?>
-                            <p class="error"><?= $failureAuth ?></p>
+                            <p class="error"><?php include $_SERVER['DOCUMENT_ROOT'] . '/include/failureAuth.php'; ?></p>
                         <?php endif; ?>
                     </form>
                 </div>
