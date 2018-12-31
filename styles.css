@@ -25,16 +25,16 @@ img {
 }
 
 a {
-    text-decoration: underline;
+    text-decoration: none;
     color: #333;
 }
 
 a:hover {
     color: #00a0de;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
-.header {
+header {
     padding: 0px;
     margin: 0px 0px 10px 0px;
     border: none;
@@ -87,6 +87,7 @@ a:hover {
     text-decoration: none;
     display: block;
     color: #999999;
+    font-size: 16px;
 }
 
 .top-menu li a:hover {
@@ -103,6 +104,12 @@ a:hover {
     display: block;
     color: #333;
     background: #f6f6f6;
+}
+
+.top-menu .menu-item-active a,
+.menu-item-active a
+{
+    text-decoration: underline;
 }
 
 .left-column {
@@ -412,17 +419,18 @@ a:hover {
     width: 40px;
 }
 
-.footer {
+footer {
     color: #fff;
     margin: 20px 0px 0px 0px;
     padding: 0px;
 }
 
-.footer a {
+footer a {
     color: #fff;
+    font-size: 12px;
 }
 
-.footer a:hover {
+footer a:hover {
     color: #CCC;
 }
 

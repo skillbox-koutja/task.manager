@@ -4,16 +4,16 @@ $successAuth = $failureAuth = false;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $loginErr = $passwordErr = '';
     if (isset($_POST['login'])) {
-        $login = test_input($_POST['login']);
+        $login = testInput($_POST['login']);
     }
     if (isset($_POST['password'])) {
-        $password = test_input($_POST['password']);
+        $password = testInput($_POST['password']);
     }
     $successAuth = checkAuth($login, $password);
     if ($successAuth) {
         $login = $password = '';
     } else {
-        $failureAuth =  true;
+        $failureAuth = true;
     }
 }
 
@@ -21,15 +21,11 @@ function checkAuth($login, $password)
 {
     $loginStore = require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/loginStore.php';
     $passwordStore = require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/passwordStore.php';
-    foreach ($loginStore as $index => $item) {
-        if ($login === $item && $password === $passwordStore[$index]) {
-            return true;
-        }
-    }
-    return false;
+    $index = array_search($login, $loginStore, true);
+    return $index !== false && $password === $passwordStore[$index];
 }
 
-function test_input($data)
+function testInput($data)
 {
     $data = trim($data);
     $data = stripslashes($data);
@@ -37,6 +33,22 @@ function test_input($data)
     return $data;
 }
 
+function getActiveSection(array $mainMenu, string $path)
+{
+    $activeSectionIndex = array_search($path, array_column($mainMenu, 'path'));
+    if ($activeSectionIndex !== false) {
+        $activeSection = $mainMenu[$activeSectionIndex];
+    } else {
+        $activeSection = $mainMenu[0];
+    }
+    return $activeSection;
+}
+
+$url = parse_url($_SERVER['REQUEST_URI']);
+$mainMenu = require_once $_SERVER['DOCUMENT_ROOT'] . '/include/main_menu.php';
+$activeSection = getActiveSection($mainMenu, $url['path']);
+$urlLoginAction = $url['path'] . '?login=true';
+echo '</pre>';
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -44,25 +56,21 @@ function test_input($data)
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="styles.css" rel="stylesheet"/>
+    <link href="/styles.css" rel="stylesheet"/>
     <title>Project - ведение списков</title>
 </head>
 
 <body>
-<div class="header">
-    <div class="logo"><img src="i/logo.png" width="68" height="23" alt="Project"/></div>
-    <div style="clear: both"></div>
-</div>
 
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/include/header.php'; ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td class="left-column-index">
-
-            <h1>Возможности проекта —</h1>
+            <h1><?= $activeSection['title'] ?></h1>
             <p>Вести свои личные списки, например покупки в магазине, цели, задачи и многое другое. Делится списками с
                 друзьями и просматривать списки друзей.</p>
 
-            <a href="/?login=true">Перейти к авторизации</a>
+            <a href="<?= $urlLoginAction ?>">Перейти к авторизации</a>
         </td>
         <?php if (filter_var($_GET['login'], FILTER_VALIDATE_BOOLEAN)): ?>
             <td class="right-column-index">
@@ -75,7 +83,7 @@ function test_input($data)
                     <div style="clear: both;"></div>
                 </div>
                 <div class="index-auth">
-                    <form action="/?login=true"
+                    <form action="<?= $urlLoginAction ?>"
                           method="post"
                           width="100%"
                           border="0"
@@ -113,9 +121,7 @@ function test_input($data)
     </tr>
 </table>
 
-<div class="footer">&copy;&nbsp;<nobr>2018</nobr>
-    Project.
-</div>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/include/footer.php'; ?>
 
 </body>
 </html>
