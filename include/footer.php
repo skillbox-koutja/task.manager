@@ -1,14 +1,10 @@
 <?php
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/include/menu_section_builder.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sorter/sorter.php';
 
 $footerMenu = $mainMenu;
-usort($footerMenu, function ($a, $b) {
-    if ($a === $b) {
-        return 0;
-    }
-    return ($a['sort'] > $b['sort']) ? -1 : 1;
-});
+usort($footerMenu, createSorterComparison(DESC_SORTER_DIRECTION, 'sort'));
 $footerMenuSections = buildMenuSectionItems(
     $footerMenu,
     ['menu-item', 'footer-menu-item'],
