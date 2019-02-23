@@ -1,37 +1,6 @@
 <?php
-$login = $password = '';
-$successAuth = $failureAuth = false;
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $loginErr = $passwordErr = '';
-    if (isset($_POST['login'])) {
-        $login = testInput($_POST['login']);
-    }
-    if (isset($_POST['password'])) {
-        $password = testInput($_POST['password']);
-    }
-    $successAuth = checkAuth($login, $password);
-    if ($successAuth) {
-        $login = $password = '';
-    } else {
-        $failureAuth = true;
-    }
-}
 
-function checkAuth($login, $password)
-{
-    $loginStore = require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/loginStore.php';
-    $passwordStore = require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/passwordStore.php';
-    $index = array_search($login, $loginStore, true);
-    return $index !== false && $password === $passwordStore[$index];
-}
-
-function testInput($data)
-{
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
+require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/auth.php';
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/route/index.php';
 
