@@ -1,15 +1,8 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/include/menu_section_builder.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/include/menuBuilder.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/sorter/sorter.php';
 
-$headerMenu = $mainMenu;
-usort($headerMenu, createSorterComparison(ASC_SORTER_DIRECTION, 'sort'));
-$headerMenuSections = buildMenuSectionItems(
-    $headerMenu,
-    ['menu-item', 'header-menu-item'],
-    $activeSection
-);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -26,15 +19,5 @@ $headerMenuSections = buildMenuSectionItems(
         <img src="/i/logo.png" width="68" height="23" alt="Project"/>
     </div>
     <div style="clear: both"></div>
-    <div id='header-menu' class="menu top-menu">
-        <ul>
-            <?php foreach ($headerMenuSections as $item): ?>
-                <li class="<?= $item['cssClass'] ?>">
-                    <a href="<?= $item['path'] ?>">
-                        <span><?= $item['title'] ?></span>
-                    </a>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
+    <?= createHtmlMenu($mainMenu, 'top-menu') ?>
 </header>
