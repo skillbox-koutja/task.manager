@@ -1,18 +1,14 @@
 <?php
 
-const ASC_SORTER_DIRECTION = 'asc';
-const DESC_SORTER_DIRECTION = 'desc';
-
-function createSorterComparison(string $direction = ASC_SORTER_DIRECTION, $property = null)
+function createSorterComparison($direction = SORT_ASC, $property = null)
 {
-    $direction = strtolower($direction);
     switch ($direction) {
-        case ASC_SORTER_DIRECTION:
+        case SORT_ASC:
             $sorter = function ($a, $b) {
                 return $a <=> $b;
             };
             break;
-        case DESC_SORTER_DIRECTION:
+        case SORT_DESC:
             $sorter = function ($a, $b) {
                 return $b <=> $a;
             };
@@ -22,7 +18,7 @@ function createSorterComparison(string $direction = ASC_SORTER_DIRECTION, $prope
                 sprintf(
                     'Invalid sort direction "%s". Allowed list: %s',
                     $direction,
-                    '"' . implode('", "', [ASC_SORTER_DIRECTION, DESC_SORTER_DIRECTION]) .'"'
+                    '"' . implode('", "', ['SORT_ASC', 'SORT_DESC']) .'"'
                 )
             );
     }
@@ -33,4 +29,10 @@ function createSorterComparison(string $direction = ASC_SORTER_DIRECTION, $prope
         };
     }
     return $sorter;
+}
+
+function arraySort(array $array, $key = 'sort', $sort = SORT_ASC)
+{
+    usort($array, createSorterComparison($sort, $key));
+    return $array;
 }
