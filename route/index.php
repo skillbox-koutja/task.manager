@@ -1,16 +1,18 @@
 <?php
 
-function getActiveSection(array $mainMenu, string $path)
+function findActiveSectionIndex(array $menu, string $path)
 {
-    $activeSectionIndex = array_search($path, array_column($mainMenu, 'path'));
-    if ($activeSectionIndex !== false) {
-        $activeSection = $mainMenu[$activeSectionIndex];
-    } else {
-        $activeSection = $mainMenu[0];
-    }
-    return $activeSection;
+    $index = array_search($path, array_column($menu, 'path'));
+    return $index === false ? 0 : $index;
 }
 
-$url = parse_url($_SERVER['REQUEST_URI']);
-$mainMenu = require_once $_SERVER['DOCUMENT_ROOT'] . '/include/main_menu.php';
-$activeSection = getActiveSection($mainMenu, $url['path']);
+function setActiveSection(array $menu, int $index)
+{
+    $menu[$index]['active'] = true;
+    return $menu;
+}
+
+function getActiveSectionTitle(array $menu, int $index)
+{
+    return $menu[$index]['title'];
+}

@@ -4,17 +4,20 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/auth.php';
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/route/index.php';
 
-$url = parse_url($_SERVER['REQUEST_URI']);
-$urlLoginAction = $url['path'] . '?login=true';
+$urlPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$mainMenu = require_once $_SERVER['DOCUMENT_ROOT'] . '/include/main_menu.php';
+
+$activeSectionIndex = findActiveSectionIndex($mainMenu, $urlPath);
+$mainMenu = setActiveSection($mainMenu, $activeSectionIndex);
+
+$urlLoginAction = $urlPath . '?login=true';
 ?>
-
-
 
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/include/header.php'; ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td class="left-column-index">
-            <h1><?= $activeSection['title'] ?></h1>
+            <h1><?= getActiveSectionTitle($mainMenu, $activeSectionIndex) ?></h1>
             <p>Вести свои личные списки, например покупки в магазине, цели, задачи и многое другое. Делится списками с
                 друзьями и просматривать списки друзей.</p>
 
