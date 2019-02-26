@@ -29,3 +29,5 @@ $footerMenuSections = buildMenuSectionItems(
         <img src="/i/logo.png" width="68" height="23" alt="Project"/>
     </div>
 </footer>
+</body>
+</html>

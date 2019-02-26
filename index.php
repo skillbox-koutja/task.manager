@@ -6,19 +6,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/route/index.php';
 
 $url = parse_url($_SERVER['REQUEST_URI']);
 $urlLoginAction = $url['path'] . '?login=true';
-echo '</pre>';
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="/styles.css" rel="stylesheet"/>
-    <title>Project - ведение списков</title>
-</head>
 
-<body>
 
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/include/header.php'; ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -80,6 +70,3 @@ echo '</pre>';
 </table>
 
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/include/footer.php'; ?>
-
-</body>
-</html>
