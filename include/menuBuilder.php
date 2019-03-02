@@ -18,37 +18,23 @@ function buildMenuItems(
         if ($item['active'] ?? false) {
             $cssClass[] = 'menu-item-active';
         }
-        $item['cssClass'] = implode(' ', $cssClass);
+        $item['class'] = implode(' ', $cssClass);
         $item['title'] = cropMenuItemTitle($item['title'], 15, 12);
         $result[] = $item;
     }
     return $result;
 }
 
-
-function createHtmlMenuItems($items)
-{
-    $result = [];
-    foreach ($items as $item) {
-        $result[] = sprintf(
-            '<li class="%s"><a href="%s"><span>%s</span></a></li>',
-            $item['cssClass'],
-            $item['path'],
-            $item['title']
-        );
-    }
-    return $result;
-}
-function createHtmlMenu(array $array, $class = '', $sort = SORT_ASC)
+function renderMenu(array $array, $class = '', $sort = SORT_ASC)
 {
     $items = arraySort($array, 'sort', $sort);
-    $menuItems = buildMenuItems(
-        $items,
-        ['menu-item']
-    );
+    $menu = [
+        'class' => implode(' ', ['menu', $class]),
+        'items' => buildMenuItems(
+            $items,
+            ['menu-item']
+        )
+    ];
 
-    return sprintf('<div class="%s"><ul>%s</ul></div>',
-        implode(' ', ['menu', $class]),
-        implode('', createHtmlMenuItems($menuItems))
-    );
+    return require $_SERVER['DOCUMENT_ROOT'] . '/views/menu.php';
 }

@@ -19,5 +19,5 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/sorter/sorter.php';
         <img src="/i/logo.png" width="68" height="23" alt="Project"/>
     </div>
     <div style="clear: both"></div>
-    <?= createHtmlMenu($mainMenu, 'top-menu') ?>
+    <?php renderMenu($mainMenu, 'top-menu') ?>
 </header>
