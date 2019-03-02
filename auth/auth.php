@@ -12,7 +12,6 @@ function testInput($data)
 
 function isExpiredSession()
 {
-    var_dump(time() . ' ' . $_SESSION['lastAccess']);
     return (time() - $_SESSION['lastAccess']) > LIFETIME_SESSION;
 }
 
@@ -31,9 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $failureAuth = true;
 } else {
-    var_dump(isset($_SESSION['lastAccess']) ? 'isset lastAccess' : 'not set lastAccess');
     if (isset($_SESSION['lastAccess']) && isExpiredSession()) {
-        var_dump('isExpiredSession', $_SESSION);
         $password = $_SESSION['password'] ?? null;
         require $_SERVER['DOCUMENT_ROOT'] . '/auth/logout.php';
     }
@@ -49,5 +46,3 @@ if ($successAuth) {
     $login = $password = null;
     $failureAuth = false;
 }
-var_dump('$_SESSION', $_SESSION);
-var_dump('$password', $password);
