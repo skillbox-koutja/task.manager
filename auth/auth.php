@@ -31,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $failureAuth = true;
 } else {
     if (isset($_SESSION['lastAccess']) && isExpiredSession()) {
-        var_dump('isExpiredSession', $_SESSION);
         $password = $_SESSION['password'] ?? null;
         require $_SERVER['DOCUMENT_ROOT'] . '/auth/logout.php';
     }
