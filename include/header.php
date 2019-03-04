@@ -13,5 +13,5 @@
         <img src="/i/logo.png" width="68" height="23" alt="Project"/>
     </div>
     <div style="clear: both"></div>
-    <?php renderMenu($mainMenu, 'top-menu') ?>
+    <?php renderMenu($mainMenu, 'top-menu'); ?>
 </header>
