@@ -12,7 +12,12 @@ function testInput($data)
 
 function isExpiredSession()
 {
-    return (time() - $_SESSION['lastAccess']) > LIFETIME_SESSION;
+    return !isset($_SESSION['login']);
+}
+
+function resetLoginCookie($login)
+{
+    return setcookie('login', $login, time() + LIFETIME_LOGIN_COOKIE);
 }
 
 if (filter_var($_GET['logout'], FILTER_VALIDATE_BOOLEAN)) {
@@ -32,8 +37,10 @@ if (isset($_POST['submit_auth'])) {
     $failureAuth = true;
 } else {
     $password = null;
-    if (isset($_SESSION['lastAccess']) && isExpiredSession()) {
-        $password = $_SESSION['password'] ?? null;
+    if (isExpiredSession() && isset($_COOKIE['login'])) {
+        $login = $_COOKIE['login'];
+        resetLoginCookie($login);
+        $password = getPasswordByLogin($login);
         require $_SERVER['DOCUMENT_ROOT'] . '/auth/logout.php';
     }
     $login = $_SESSION['login'] ?? null;
@@ -42,9 +49,11 @@ if (isset($_POST['submit_auth'])) {
 
 $successAuth = checkAuth($login, $password);
 if ($successAuth) {
-    $_SESSION['lastAccess'] = time();
     $_SESSION['login'] = $login;
     $_SESSION['password'] = $password;
+    resetLoginCookie($login);
     $login = $password = null;
     $failureAuth = false;
 }
+
+

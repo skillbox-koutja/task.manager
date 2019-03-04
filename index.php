@@ -3,6 +3,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/include/menuBuilder.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/sorter/sorter.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/constants/session.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/constants/cookie.php';
 
 session_name('session_id');
 session_start();
@@ -35,7 +36,7 @@ $logoutUrlAction = $urlPath . '?logout=true';
                 <p>Вести свои личные списки, например покупки в магазине, цели, задачи и многое другое. Делится списками
                     с
                     друзьями и просматривать списки друзей.</p>
-                <?php if (isset($_SESSION['lastAccess'])): ?>
+                <?php if (isset($_SESSION['login'])): ?>
                     <a href="<?= $logoutUrlAction ?>">Выйти</a>
                 <?php else: ?>
                     <a href="<?= $loginUrlAction ?>">Перейти к авторизации</a>
