@@ -36,15 +36,14 @@ if (isset($_POST['submit_auth'])) {
     }
     $failureAuth = true;
 } else {
-    $password = null;
+    $login = null;
     if (isExpiredSession() && isset($_COOKIE['login'])) {
         $login = $_COOKIE['login'];
         resetLoginCookie($login);
-        $password = getPasswordByLogin($login);
         require $_SERVER['DOCUMENT_ROOT'] . '/auth/logout.php';
     }
-    $login = $_SESSION['login'] ?? null;
-    $password = $_SESSION['password'] ?? $password;
+    $login = $_SESSION['login'] ?? $login;
+    $password = $_SESSION['password'] ?? null;
 }
 
 $successAuth = checkAuth($login, $password);

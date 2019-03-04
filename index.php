@@ -53,21 +53,17 @@ $logoutUrlAction = $urlPath . '?logout=true';
                         <div style="clear: both;"></div>
                     </div>
                     <div class="index-auth">
+                        <?php if ($successAuth): ?>
+                            <p class="success"><?php include $_SERVER['DOCUMENT_ROOT'] . '/include/successAuth.php'; ?></p>
+                            <a href="<?= $urlPath ?>">Перейти к главной странице</a>
+                        <?php else: ?>
                         <form action="<?= $loginUrlAction ?>"
                               method="post"
                               width="100%"
                               border="0"
                               cellspacing="0"
                               cellpadding="0">
-                            Ваш логин: <input type="text"
-                                              id="auth_login"
-                                              name="login"
-                                              size="30"
-                                              value="<?= $login; ?>">
-                            <?php if ($loginErr): ?>
-                                <span class="error"> <?= $loginErr ?></span>
-                            <?php endif; ?>
-                            <br><br>
+                            <?php include $_SERVER['DOCUMENT_ROOT'] . '/include/loginInput.php'; ?>
                             Ваш пароль: <input type="password"
                                                id="auth_password"
                                                name="password"
@@ -78,14 +74,11 @@ $logoutUrlAction = $urlPath . '?logout=true';
                             <?php endif; ?>
                             <br><br>
                             <input type="submit" name="submit_auth" value="Войти">
-                            <?php if ($successAuth): ?>
-                                <p class="success"><?php include $_SERVER['DOCUMENT_ROOT'] . '/include/successAuth.php'; ?></p>
-                                <a href="<?= $urlPath ?>">Перейти к главной странице</a>
-                            <?php endif; ?>
                             <?php if ($failureAuth): ?>
                                 <p class="error"><?php include $_SERVER['DOCUMENT_ROOT'] . '/include/failureAuth.php'; ?></p>
                             <?php endif; ?>
                         </form>
+                        <?php endif; ?>
                     </div>
                 </td>
             <?php endif; ?>
