@@ -20,7 +20,8 @@ if (filter_var($_GET['logout'], FILTER_VALIDATE_BOOLEAN)) {
 }
 
 $successAuth = $failureAuth = false;
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+if (isset($_POST['submit_auth'])) {
     $password = $login = $loginErr = $passwordErr = null;
     if (isset($_POST['login'])) {
         $login = testInput($_POST['login']);

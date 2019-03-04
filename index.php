@@ -76,7 +76,7 @@ $logoutUrlAction = $urlPath . '?logout=true';
                                 <span class="error"> <?= $passwordErr ?></span>
                             <?php endif; ?>
                             <br><br>
-                            <input type="submit" name="submit" value="Войти">
+                            <input type="submit" name="submit_auth" value="Войти">
                             <?php if ($successAuth): ?>
                                 <p class="success"><?php include $_SERVER['DOCUMENT_ROOT'] . '/include/successAuth.php'; ?></p>
                                 <a href="<?= $urlPath ?>">Перейти к главной странице</a>
