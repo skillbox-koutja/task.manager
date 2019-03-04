@@ -21,7 +21,7 @@ if (filter_var($_GET['logout'], FILTER_VALIDATE_BOOLEAN)) {
 
 $successAuth = $failureAuth = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $loginErr = $passwordErr = null;
+    $password = $login = $loginErr = $passwordErr = null;
     if (isset($_POST['login'])) {
         $login = testInput($_POST['login']);
     }
@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $failureAuth = true;
 } else {
+    $password = null;
     if (isset($_SESSION['lastAccess']) && isExpiredSession()) {
         $password = $_SESSION['password'] ?? null;
         require $_SERVER['DOCUMENT_ROOT'] . '/auth/logout.php';
