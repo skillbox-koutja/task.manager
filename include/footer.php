@@ -1,9 +1,3 @@
-<?php
-
-require_once $_SERVER['DOCUMENT_ROOT'] . '/include/menuBuilder.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sorter/sorter.php';
-
-?>
 <footer>
     <div style="clear: both"></div>
 

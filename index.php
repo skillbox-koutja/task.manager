@@ -1,5 +1,7 @@
 <?php
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/include/menuBuilder.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sorter/sorter.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/constants/session.php';
 
 session_name('session_id');
