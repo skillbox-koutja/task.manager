@@ -10,7 +10,7 @@
                       size="30"
                       value="<?= $login; ?>">
     <?php if ($loginErr): ?>
-        <span class="error"> <?= $loginErr ?></span>
+        <span class="error"> <?= $loginErr; ?></span>
     <?php endif; ?>
     <br><br>
 <?php endif; ?>

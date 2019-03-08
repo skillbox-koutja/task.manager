@@ -20,7 +20,7 @@ function resetLoginCookie($login)
     return setcookie('login', $login, time() + LIFETIME_LOGIN_COOKIE);
 }
 
-if (filter_var($_GET['logout'], FILTER_VALIDATE_BOOLEAN)) {
+if (filter_var($_GET['logout'] ?? false, FILTER_VALIDATE_BOOLEAN)) {
     require $_SERVER['DOCUMENT_ROOT'] . '/auth/logout.php';
 }
 

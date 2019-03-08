@@ -32,17 +32,17 @@ $logoutUrlAction = $urlPath . '?logout=true';
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td class="left-column-index">
-                <h1><?= getActiveSectionTitle($mainMenu, $activeSectionIndex) ?></h1>
+                <h1><?= getActiveSectionTitle($mainMenu, $activeSectionIndex); ?></h1>
                 <p>Вести свои личные списки, например покупки в магазине, цели, задачи и многое другое. Делится списками
                     с
                     друзьями и просматривать списки друзей.</p>
                 <?php if (isset($_SESSION['login'])): ?>
-                    <a href="<?= $logoutUrlAction ?>">Выйти</a>
+                    <a href="<?= $logoutUrlAction; ?>">Выйти</a>
                 <?php else: ?>
-                    <a href="<?= $loginUrlAction ?>">Перейти к авторизации</a>
+                    <a href="<?= $loginUrlAction; ?>">Перейти к авторизации</a>
                 <?php endif; ?>
             </td>
-            <?php if (filter_var($_GET['login'], FILTER_VALIDATE_BOOLEAN)): ?>
+            <?php if (filter_var($_GET['login'] ?? false, FILTER_VALIDATE_BOOLEAN)): ?>
                 <td class="right-column-index">
                     <div class="project-folders-menu">
                         <ul class="project-folders-v">
@@ -55,9 +55,9 @@ $logoutUrlAction = $urlPath . '?logout=true';
                     <div class="index-auth">
                         <?php if ($successAuth): ?>
                             <p class="success"><?php include $_SERVER['DOCUMENT_ROOT'] . '/include/successAuth.php'; ?></p>
-                            <a href="<?= $urlPath ?>">Перейти к главной странице</a>
+                            <a href="<?= $urlPath; ?>">Перейти к главной странице</a>
                         <?php else: ?>
-                        <form action="<?= $loginUrlAction ?>"
+                        <form action="<?= $loginUrlAction; ?>"
                               method="post"
                               width="100%"
                               border="0"
@@ -70,7 +70,7 @@ $logoutUrlAction = $urlPath . '?logout=true';
                                                size="30"
                                                value="<?= $password; ?>">
                             <?php if ($passwordErr): ?>
-                                <span class="error"> <?= $passwordErr ?></span>
+                                <span class="error"> <?= $passwordErr; ?></span>
                             <?php endif; ?>
                             <br><br>
                             <input type="submit" name="submit_auth" value="Войти">
