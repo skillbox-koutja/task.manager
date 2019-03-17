@@ -42,7 +42,7 @@ create table app_user_groups
   group_id int unsigned not null,
   constraint app_user_groups_pk
     primary key (user_id, group_id),
-  constraint app_user_groups_group__fk
+  constraint app_user_groups_group_fk
     foreign key (group_id) references app_group (id)
       on update cascade on delete cascade,
   constraint app_user_groups_user_fk
@@ -60,7 +60,13 @@ create table msg
   to_id int unsigned comment 'получатель',
   is_read bool default 0 comment 'флаг, что сообщение прочитано',
   constraint message_pk
-    primary key (id)
+    primary key (id),
+  constraint msg_from_fk
+    foreign key (from_id) references app_user (id)
+      on update cascade on delete cascade,
+  constraint msg_to_fk
+    foreign key (to_id) references app_user (id)
+      on update cascade on delete cascade
 );
 
 create table msg_section_color
