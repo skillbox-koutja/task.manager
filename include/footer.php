@@ -1,7 +1,8 @@
 <footer>
     <div style="clear: both"></div>
-
-    <?php renderMenu($mainMenu, 'footer-menu', SORT_DESC); ?>
+    <?php if (isset($mainMenu)): ?>
+        <?php renderMenu($mainMenu, 'footer-menu', SORT_DESC); ?>
+    <?php endif; ?>
     &copy;&nbsp;<nobr>2018</nobr>
     Project.
     <div class="logo">

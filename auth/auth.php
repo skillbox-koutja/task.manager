@@ -1,6 +1,7 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/checkAuth.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/constants/cookie.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/db/query/user.php';
 
 function testInput($data)
 {
@@ -12,12 +13,12 @@ function testInput($data)
 
 function isExpiredSession()
 {
-    return !isset($_SESSION['login']);
+    return !isset($_SESSION['email']);
 }
 
-function resetLoginCookie($login)
+function resetLoginCookie($email)
 {
-    return setcookie('login', $login, time() + LIFETIME_LOGIN_COOKIE);
+    return setcookie('email', $email, time() + LIFETIME_LOGIN_COOKIE);
 }
 
 if (filter_var($_GET['logout'] ?? false, FILTER_VALIDATE_BOOLEAN)) {
@@ -27,31 +28,32 @@ if (filter_var($_GET['logout'] ?? false, FILTER_VALIDATE_BOOLEAN)) {
 $successAuth = $failureAuth = false;
 
 if (isset($_POST['submit_auth'])) {
-    $password = $login = $loginErr = $passwordErr = null;
-    if (isset($_POST['login'])) {
-        $login = testInput($_POST['login']);
+    $password = $email = $emailErr = $passwordErr = null;
+    if (isset($_POST['email'])) {
+        $email = testInput($_POST['email']);
     }
     if (isset($_POST['password'])) {
         $password = testInput($_POST['password']);
     }
     $failureAuth = true;
 } else {
-    $login = null;
-    if (isExpiredSession() && isset($_COOKIE['login'])) {
-        $login = $_COOKIE['login'];
-        resetLoginCookie($login);
+    $email = null;
+    if (isExpiredSession() && isset($_COOKIE['email'])) {
+        $email = $_COOKIE['email'];
+        resetLoginCookie($email);
         require $_SERVER['DOCUMENT_ROOT'] . '/auth/logout.php';
     }
-    $login = $_SESSION['login'] ?? $login;
+    $email = $_SESSION['email'] ?? $email;
     $password = $_SESSION['password'] ?? null;
 }
 
-$successAuth = checkAuth($login, $password);
-if ($successAuth) {
-    $_SESSION['login'] = $login;
+$user = findUserByLoginAndPassword($email, $password, $pdo);
+if ($user) {
+    $_SESSION['email'] = $email;
     $_SESSION['password'] = $password;
-    resetLoginCookie($login);
-    $login = $password = null;
+    resetLoginCookie($email);
+    $email = $password = null;
+    $successAuth = true;
     $failureAuth = false;
 }
 

@@ -1,18 +1,10 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/include/menuBuilder.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sorter/sorter.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/constants/session.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/constants/cookie.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
 
-session_name('session_id');
-session_start();
-setcookie(session_name(), session_id(), time() + LIFETIME_SESSION);
-
-require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/auth.php';
-
-$login = $login ?? null;
-$loginErr = $loginErr ?? null;
+$user = $user ?? null;
+$email = $email ?? null;
+$emailErr = $emailErr ?? null;
 $password = $password ?? null;
 $passwordErr = $passwordErr ?? null;
 
@@ -20,6 +12,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/route/index.php';
 
 $urlPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $mainMenu = require_once $_SERVER['DOCUMENT_ROOT'] . '/include/main_menu.php';
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/include/menuBuilder.php';
 
 $activeSectionIndex = findActiveSectionIndex($mainMenu, $urlPath);
 $mainMenu = setActiveSection($mainMenu, $activeSectionIndex);
@@ -36,7 +30,9 @@ $logoutUrlAction = $urlPath . '?logout=true';
                 <p>Вести свои личные списки, например покупки в магазине, цели, задачи и многое другое. Делится списками
                     с
                     друзьями и просматривать списки друзей.</p>
-                <?php if (isset($_SESSION['login'])): ?>
+                <?php if (isset($_SESSION['email'])): ?>
+                    <a href="/post/">Почта</a>
+                <br>
                     <a href="<?= $logoutUrlAction; ?>">Выйти</a>
                 <?php else: ?>
                     <a href="<?= $loginUrlAction; ?>">Перейти к авторизации</a>
