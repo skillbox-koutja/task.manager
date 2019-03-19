@@ -37,7 +37,7 @@ function findGroupsByUser($user)
        ag.caption "caption",
        ag.description "description"
 from app_group ag
-inner join app_user_groups aug on ag.id = aug.group_id
+inner join group_user aug on ag.id = aug.group_id
 where aug.user_id = ?
 ');
     $stmt->execute([$user['id']]);
@@ -57,7 +57,7 @@ function findReceivers()
        au.last_name "lastName",
        au.middle_name "middleName"
 from app_user au
-left join app_user_groups aug on au.id = aug.user_id
+left join group_user aug on au.id = aug.user_id
 left join app_group ag on aug.group_id = ag.id
 where au.recv_email = :recv_email
 and ag.caption = :recv_group

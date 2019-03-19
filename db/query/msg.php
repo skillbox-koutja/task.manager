@@ -12,9 +12,9 @@ function findAllSections()
        ms.parent_id "parentId",
        msp.caption "parentCaption",
        msc.hex_value "colorHex"
-from msg_section ms
-left join msg_section_color msc on ms.color_id = msc.id
-left join msg_section msp on msp.id = ms.parent_id
+from section ms
+left join color msc on ms.color_id = msc.id
+left join section msp on msp.id = ms.parent_id
 order by msp.caption, ms.caption');
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -30,8 +30,7 @@ function findAllReceivedMessageUser($user, bool $isRead = null)
        m.title "title",
        ms.id "sectionId"
 from msg m
-left join msg_section_assoc msa on m.id = msa.msg_id
-left join msg_section ms on msa.section_id = ms.id
+left join section ms on m.section_id = ms.id
 where m.to_id = :toId';
     if (is_bool($isRead)) {
         $sql .= ' and m.is_read = :isRead';
