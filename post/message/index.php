@@ -7,10 +7,11 @@ $postPage = function ($user) {
     // не прочитанные письма
     $msgId = $_GET['id'] ?? null;
     $message = findMessageDetail($msgId);
-    if (false === $message) {
+    if (false === $message || (int)$message['toId'] !== (int)$user['id']) {
+        // нельзя читать чужую переписку
         require $_SERVER['DOCUMENT_ROOT'] . '/include/post/messageNotFound.php';
     } else {
-        if ((int)$message['toId'] === (int)$user['id']) {
+        if (false === filter_var($message['isRead'], FILTER_VALIDATE_BOOLEAN)) {
             messageSetRead($msgId);
         }
         extract($message);

@@ -52,6 +52,7 @@ function findMessageDetail($msg)
        m.body "body",
        m.created_at "createdAt",
        m.to_id "toId",
+       m.is_read "isRead",
        author.email "authorEmail",
        author.first_name "authorFirstName",
        author.last_name "authorLastName",
@@ -78,8 +79,8 @@ function messageSetRead($msg)
 
 function saveMessage($data): bool
 {
-    $sql = "INSERT INTO msg (title, body, created_at, from_id, to_id, is_read)
-  VALUES (:title, :body, :createdAt, :fromId, :toId, 0)";
+    $sql = "INSERT INTO msg (title, body, section_id, created_at, from_id, to_id, is_read)
+  VALUES (:title, :body, :sectionId, :createdAt, :fromId, :toId, 0)";
     $query = db()->prepare($sql);
     return $query->execute($data);
 }
