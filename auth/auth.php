@@ -13,7 +13,7 @@ function testInput($data)
 
 function isExpiredSession()
 {
-    return !isset($_SESSION['email']);
+    return !isset($_SESSION['user']);
 }
 
 function resetLoginCookie($email)
@@ -26,35 +26,46 @@ if (filter_var($_GET['logout'] ?? false, FILTER_VALIDATE_BOOLEAN)) {
 }
 
 $successAuth = $failureAuth = false;
+$user = null;
 
 if (isset($_POST['submit_auth'])) {
     $password = $email = $emailErr = $passwordErr = null;
     if (isset($_POST['email'])) {
         $email = testInput($_POST['email']);
+        $user = findUserByLogin($email);
     }
     if (isset($_POST['password'])) {
         $password = testInput($_POST['password']);
     }
-    $failureAuth = true;
+    $successAuth = $user && $user['password'] === $password;
+    if ($successAuth) {
+        $user['groups'] = findGroupsByUser($user);
+    }
+    $failureAuth = !$successAuth;
 } else {
     $email = null;
-    if (isExpiredSession() && isset($_COOKIE['email'])) {
-        $email = $_COOKIE['email'];
-        resetLoginCookie($email);
-        require $_SERVER['DOCUMENT_ROOT'] . '/auth/logout.php';
+    $password = null;
+    // сессия истекла
+    if (isExpiredSession()) {
+        // но есть кука
+        if (isset($_COOKIE['email'])) {
+            $email = $_COOKIE['email'];
+            resetLoginCookie($email);
+            $user = findUserByLogin($email);
+            $user['groups'] = findGroupsByUser($user);
+            require $_SERVER['DOCUMENT_ROOT'] . '/auth/logout.php';
+        }
+    } else {
+        $user = $_SESSION['user'];
+        $successAuth = true;
     }
-    $email = $_SESSION['email'] ?? $email;
-    $password = $_SESSION['password'] ?? null;
 }
 
-$user = findUserByLoginAndPassword($email, $password, $pdo);
-if ($user) {
-    $_SESSION['email'] = $email;
-    $_SESSION['password'] = $password;
-    resetLoginCookie($email);
+if ($successAuth) {
+    unset($user['password']);
+    $_SESSION['user'] = $user;
+    resetLoginCookie($user['email']);
     $email = $password = null;
-    $successAuth = true;
-    $failureAuth = false;
 }
 
 

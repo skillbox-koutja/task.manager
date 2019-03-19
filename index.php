@@ -30,7 +30,7 @@ $logoutUrlAction = $urlPath . '?logout=true';
                 <p>Вести свои личные списки, например покупки в магазине, цели, задачи и многое другое. Делится списками
                     с
                     друзьями и просматривать списки друзей.</p>
-                <?php if (isset($_SESSION['email'])): ?>
+                <?php if ($successAuth): ?>
                     <a href="/post/">Почта</a>
                 <br>
                     <a href="<?= $logoutUrlAction; ?>">Выйти</a>

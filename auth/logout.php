@@ -1,6 +1,4 @@
 <?php
 
-unset($_SESSION['email']);
+unset($_SESSION['user']);
 unset($_COOKIE['email']);
-unset($_SESSION['password']);
-unset($_SESSION['lastAccess']);

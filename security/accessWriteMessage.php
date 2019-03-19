@@ -1,7 +1,8 @@
 <?php
 
-function accessWriteMessage(array $groups = null)
+function accessWriteMessage($user)
 {
+    $groups = $user['groups'] ?? [];
     if (empty($groups)) {
         return false;
     }
