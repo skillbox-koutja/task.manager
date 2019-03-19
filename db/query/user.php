@@ -1,14 +1,15 @@
 <?php
 
-function findUserByLoginAndPassword($email, $password, PDO $pdo)
+function findUserByLogin($email)
 {
-    if (empty($email) || empty($password)) {
+    if (empty($email)) {
         return null;
     }
-    $stmt = $pdo->prepare(
+    $stmt = db()->prepare(
         'select 
        id "id", 
        email "email",
+       pw "password",
        is_enabled "isEnabled", 
        recv_email "recvEmail", 
        phone "phone", 
@@ -17,22 +18,20 @@ function findUserByLoginAndPassword($email, $password, PDO $pdo)
        middle_name "middleName"
 from app_user au
 where au.email = :email
-and au.password = :passwd
 ');
     $stmt->execute([
         'email' => $email,
-        'passwd' => $password,
     ]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-function findGroupsByUser($user, PDO $pdo)
+function findGroupsByUser($user)
 {
     if (empty($user)) {
         return null;
     }
 
-    $stmt = $pdo->prepare(
+    $stmt = db()->prepare(
         'select
        ag.id "id",
        ag.caption "caption",
@@ -45,9 +44,9 @@ where aug.user_id = ?
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function findReceivers(PDO $pdo)
+function findReceivers()
 {
-    $stmt = $pdo->prepare(
+    $stmt = db()->prepare(
         'select
        au.id "id",
        au.email "email",

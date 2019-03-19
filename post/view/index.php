@@ -1,13 +1,13 @@
 <?php
 
-$postPage = function ($user, $pdo) {
+$postPage = function ($user) {
     require_once $_SERVER['DOCUMENT_ROOT'] . '/db/query/msg.php';
     require $_SERVER['DOCUMENT_ROOT'] . '/post/message/section.php';
 
     // не прочитанные письма
-    $messages = findAllReceivedMessageUser($user, $pdo, false);
+    $messages = findAllReceivedMessageUser($user, false);
 
-    $sections = findAllSections($pdo);
+    $sections = findAllSections();
     $sections = createSectionTree($sections);
     $sections = createSelectionOptions($sections);
     foreach ($messages as $id => $message) {

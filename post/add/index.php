@@ -1,6 +1,6 @@
 <?php
 
-$postPage = function ($user, $pdo) {
+$postPage = function ($user) {
     require $_SERVER['DOCUMENT_ROOT'] . '/db/query/msg.php';
     require $_SERVER['DOCUMENT_ROOT'] . '/post/message/section.php';
 
@@ -9,7 +9,7 @@ $postPage = function ($user, $pdo) {
             'toId',
             'fromId',
             'body',
-            'subject',
+            'title',
             'sectionId'
         ];
         foreach ($fields as $field) {
@@ -24,7 +24,7 @@ $postPage = function ($user, $pdo) {
         'toId' => null,
         'fromId' => null,
         'body' => null,
-        'subject' => null,
+        'title' => null,
         'sectionId' => null,
         'createdAt' => null
     ];
@@ -36,12 +36,12 @@ $postPage = function ($user, $pdo) {
         $data['createdAt'] = date('Y-m-d H:i:s');
         $validMessageData = isValidFormData($data);
         if ($validMessageData) {
-            $addSuccess = newMessageBySection($data['sectionId'], $data, $pdo);
+            $addSuccess = newMessage($data);
         }
     }
 
-    $receivers = findReceivers($pdo);
-    $sections = findAllSections($pdo);
+    $receivers = findReceivers();
+    $sections = findAllSections();
     $sections = createSectionTree($sections);
     $sections = createSelectionOptions($sections);
 

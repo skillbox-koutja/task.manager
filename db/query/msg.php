@@ -1,8 +1,8 @@
 <?php
 
-function findAllSections(PDO $pdo)
+function findAllSections()
 {
-    $stmt = $pdo->prepare(
+    $stmt = db()->prepare(
         'select 
        ms.id "id", 
        ms.caption "caption",
@@ -20,14 +20,14 @@ order by msp.caption, ms.caption');
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function findAllReceivedMessageUser($user, PDO $pdo, bool $isRead = null)
+function findAllReceivedMessageUser($user, bool $isRead = null)
 {
     $params = [
         'toId' => $user['id'] ?? $user,
     ];
     $sql = 'select 
        m.id "id",
-       m.subject "subject",
+       m.title "title",
        ms.id "sectionId"
 from msg m
 left join msg_section_assoc msa on m.id = msa.msg_id
@@ -38,18 +38,18 @@ where m.to_id = :toId';
         $params['isRead'] = $isRead;
     }
     $sql .= ' order by m.created_at desc';
-    $stmt = $pdo->prepare($sql);
+    $stmt = db()->prepare($sql);
     $stmt->execute($params);
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function findMessageDetail($msg, PDO $pdo)
+function findMessageDetail($msg)
 {
-    $stmt = $pdo->prepare(
+    $stmt = db()->prepare(
         'select 
        m.id "id", 
-       m.subject "subject", 
+       m.title "title", 
        m.body "body",
        m.created_at "createdAt",
        m.to_id "toId",
@@ -58,8 +58,7 @@ function findMessageDetail($msg, PDO $pdo)
        author.last_name "authorLastName",
        author.middle_name "authorMiddleName"
 from msg m
-left join msg_section_assoc msa on m.id = msa.msg_id
-left join msg_section ms on msa.section_id = ms.id
+left join section ms on m.section_id = ms.id
 left join app_user author on m.from_id = author.id
 where m.id = :msgId');
     $stmt->execute([
@@ -68,73 +67,36 @@ where m.id = :msgId');
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-function messageSetRead($msg, PDO $pdo)
+function messageSetRead($msg)
 {
     $sql = 'update msg set is_read = :isRead where id = :msgId';
-    $query = $pdo->prepare($sql);
+    $query = db()->prepare($sql);
     return $query->execute([
         'msgId' => $msg['id'] ?? $msg,
         'isRead' => true,
     ]);
 }
 
-function saveMessage($data, PDO $pdo): bool
+function saveMessage($data): bool
 {
-    $sql = "INSERT INTO msg (subject, body, created_at, from_id, to_id, is_read)
-  VALUES (:subject, :body, :createdAt, :fromId, :toId, 0)";
-    $query = $pdo->prepare($sql);
-    return $query->execute($data);
-}
-
-function saveMessageSection($data, PDO $pdo): bool
-{
-    $sql = 'INSERT INTO msg_section_assoc (msg_id, section_id)
-  VALUES (:msgId, :sectionId)';
-    $query = $pdo->prepare($sql);
+    $sql = "INSERT INTO msg (title, body, created_at, from_id, to_id, is_read)
+  VALUES (:title, :body, :createdAt, :fromId, :toId, 0)";
+    $query = db()->prepare($sql);
     return $query->execute($data);
 }
 
 function createNewMessageRecord($data)
 {
-    $msgKeys = ['subject', 'body', 'createdAt', 'fromId', 'toId'];
+    $msgKeys = ['title', 'body', 'sectionId', 'createdAt', 'fromId', 'toId'];
     $record = array_filter($data, function ($key) use ($msgKeys) {
-        return (array_search($key, $msgKeys) !== false);
+        return array_search($key, $msgKeys) !== false;
     }, ARRAY_FILTER_USE_KEY);
     return $record;
 }
 
-function createNewMessageSectionRecord($sectionId, $msg, PDO $pdo)
+function newMessage($data): bool
 {
-    $sql = 'select m.id 
-from msg m
-left join msg_section_assoc msa on m.id = msa.msg_id
-left join msg_section ms on msa.section_id = ms.id
-where to_id = :toId and from_id = :fromId and ms.id is null 
-';
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        'fromId' => $msg['fromId'],
-        'toId' => $msg['toId'],
-    ]);
-    return [
-        'sectionId' => $sectionId,
-        'msgId' => $stmt->fetchColumn(),
-    ];
-}
-
-function newMessageBySection($sectionId, $data, PDO $pdo): bool
-{
-    $pdo->beginTransaction();
     $msg = createNewMessageRecord($data);
-    $result = saveMessage($msg, $pdo);
-    if ($result) {
-        $messageSection = createNewMessageSectionRecord($sectionId, $msg, $pdo);
-        $result = saveMessageSection($messageSection, $pdo);
-    }
-    if ($result) {
-        $pdo->commit();
-    } else {
-        $pdo->rollBack();
-    }
+    $result = saveMessage($msg);
     return $result;
 }
