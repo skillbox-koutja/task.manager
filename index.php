@@ -53,27 +53,7 @@ $logoutUrlAction = $urlPath . '?logout=true';
                             <p class="success"><?php include $_SERVER['DOCUMENT_ROOT'] . '/include/successAuth.php'; ?></p>
                             <a href="<?= $urlPath; ?>">Перейти к главной странице</a>
                         <?php else: ?>
-                        <form action="<?= $loginUrlAction; ?>"
-                              method="post"
-                              width="100%"
-                              border="0"
-                              cellspacing="0"
-                              cellpadding="0">
-                            <?php include $_SERVER['DOCUMENT_ROOT'] . '/include/loginInput.php'; ?>
-                            Ваш пароль: <input type="password"
-                                               id="auth_password"
-                                               name="password"
-                                               size="30"
-                                               value="<?= $password; ?>">
-                            <?php if ($passwordErr): ?>
-                                <span class="error"> <?= $passwordErr; ?></span>
-                            <?php endif; ?>
-                            <br><br>
-                            <input type="submit" name="submit_auth" value="Войти">
-                            <?php if ($failureAuth): ?>
-                                <p class="error"><?php include $_SERVER['DOCUMENT_ROOT'] . '/include/failureAuth.php'; ?></p>
-                            <?php endif; ?>
-                        </form>
+                            <?php include $_SERVER['DOCUMENT_ROOT'] . '/include/login/loginForm.php'; ?>
                         <?php endif; ?>
                     </div>
                 </td>
