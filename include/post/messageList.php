@@ -6,7 +6,7 @@
             <?php foreach ($messages as $message): ?>
                 <li>
                     <a href="/post/message?id=<?= $message['id'] ?>">
-                        <?= $message['subject']; ?> (<?= $message['section']['caption']; ?>)
+                        <?= $message['title']; ?> (<?= $message['section']['caption']; ?>)
                     </a>
                 </li>
             <?php endforeach; ?>

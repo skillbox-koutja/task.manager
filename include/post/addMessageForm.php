@@ -10,10 +10,10 @@ $sections = $sections ?? [];
       border="0"
       cellspacing="0"
       cellpadding="0">
-    <label for="add_message-subject">Заголовок:</label>
-    <input type="text" id="add_message-subject"
-           name="subject"
-           value="<?= $data['subject'] ?? '' ?>"
+    <label for="add_message-title">Заголовок:</label>
+    <input type="text" id="add_message-title"
+           name="title"
+           value="<?= $data['title'] ?? '' ?>"
     >
     <label for="add_message-body">Текст сообщения:</label>
     <textarea id="add_message-body"
