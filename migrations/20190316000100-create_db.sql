@@ -6,7 +6,7 @@ create database if not exists unotify CHARACTER SET utf8mb4 COLLATE utf8mb4_gene
 
 use unotify;
 
-create table app_user
+create table users
 (
   id int unsigned auto_increment not null comment 'идентификатор пользователя',
   email varchar(255) not null,
@@ -22,11 +22,11 @@ create table app_user
 );
 
 create unique index user_email_uinx
-  on app_user (email);
+  on users (email);
 create unique index user_phone_uinx
-  on app_user (phone);
+  on users (phone);
 
-create table app_group
+create table groups
 (
   id int unsigned auto_increment not null comment 'идентификатор группы',
   caption nvarchar(255) not null comment 'название группы',
@@ -36,7 +36,7 @@ create table app_group
 );
 
 create unique index group_caption_uinx
-  on app_group (caption);
+  on groups (caption);
 
 create table group_user
 (
@@ -45,10 +45,10 @@ create table group_user
   constraint group_user_pk
     primary key (user_id, group_id),
   constraint group_user_g_fk
-    foreign key (group_id) references app_group (id)
+    foreign key (group_id) references groups (id)
       on update cascade on delete cascade,
   constraint group_user_u_fk
-    foreign key (user_id) references app_user (id)
+    foreign key (user_id) references users (id)
       on update cascade on delete cascade
 );
 
@@ -73,7 +73,7 @@ create table section
   constraint section_pk
     primary key (id),
   constraint section_user_fk
-    foreign key (created_by) references app_user (id)
+    foreign key (created_by) references users (id)
       on update cascade on delete cascade,
   constraint section_parent_fk
     foreign key (parent_id) references section (id)
@@ -96,10 +96,10 @@ create table msg
   constraint message_pk
     primary key (id),
   constraint msg_from_fk
-    foreign key (from_id) references app_user (id)
+    foreign key (from_id) references users (id)
       on update cascade on delete cascade,
   constraint msg_to_fk
-    foreign key (to_id) references app_user (id)
+    foreign key (to_id) references users (id)
       on update cascade on delete cascade,
   constraint msg_section_fk
     foreign key (section_id) references section (id)

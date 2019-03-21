@@ -59,7 +59,7 @@ function findMessageDetail($msg)
        author.middle_name "authorMiddleName"
 from msg m
 left join section ms on m.section_id = ms.id
-left join app_user author on m.from_id = author.id
+left join users author on m.from_id = author.id
 where m.id = :msgId');
     $stmt->execute([
         'msgId' => $msg['id'] ?? $msg

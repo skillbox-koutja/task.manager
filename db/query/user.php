@@ -16,7 +16,7 @@ function findUserByLogin($email)
        first_name "firstName", 
        last_name "lastName", 
        middle_name "middleName"
-from app_user au
+from users au
 where au.email = :email
 ');
     $stmt->execute([
@@ -36,7 +36,7 @@ function findGroupsByUser($user)
        ag.id "id",
        ag.caption "caption",
        ag.description "description"
-from app_group ag
+from groups ag
 inner join group_user aug on ag.id = aug.group_id
 where aug.user_id = ?
 ');
@@ -56,9 +56,9 @@ function findReceivers()
        au.first_name "firstName",
        au.last_name "lastName",
        au.middle_name "middleName"
-from app_user au
+from users au
 left join group_user aug on au.id = aug.user_id
-left join app_group ag on aug.group_id = ag.id
+left join groups ag on aug.group_id = ag.id
 where au.recv_email = :recv_email
 and ag.caption = :recv_group
 ');
