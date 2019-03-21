@@ -2,7 +2,6 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
 
-$user = $user ?? null;
 $email = $email ?? null;
 $emailErr = $emailErr ?? null;
 $password = $password ?? null;

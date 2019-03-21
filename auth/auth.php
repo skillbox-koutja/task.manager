@@ -68,4 +68,17 @@ if ($successAuth) {
     $email = $password = null;
 }
 
+// избавляем глобальную область видимости от переменной $user
+$user = null;
+
+function getUser()
+{
+    static $user;
+    if (isset($user)) {
+        return $user;
+    } else {
+        $user = $_SESSION['user'] ?? null;
+        return $user;
+    }
+}
 
