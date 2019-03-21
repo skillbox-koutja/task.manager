@@ -7,34 +7,34 @@ values ('login1@mail.ru', '123456', 1, 1, '+79103331101', 'Иван', 'Иван�
        ('login4@mail.ru', 'password', 1, 1, '+79103331104', 'Волк', 'Михайлов', 'Респонсович'),
        ('login5@mail.ru', '111111', 1, 1, '+79103331105', 'Бессон', 'Ильин', 'Инлюдфутерович');
 
-insert into groups (caption, description)
+insert into `groups` (caption, description)
 VALUES ('registered', 'Зарегистрированный пользователь'),
        ('access_write_message', 'Пользователь имеющий право писать сообщения');
 
 insert into group_user (user_id, group_id)
 select (select id from users where email = 'login1@mail.ru') user_id,
-       (select id from groups where caption = 'registered')  group_id;
+       (select id from `groups` where caption = 'registered')  group_id;
 insert into group_user (user_id, group_id)
 select (select id from users where email = 'login2@mail.ru') user_id,
-       (select id from groups where caption = 'registered')  group_id;
+       (select id from `groups` where caption = 'registered')  group_id;
 insert into group_user (user_id, group_id)
 select (select id from users where email = 'login3@mail.ru') user_id,
-       (select id from groups where caption = 'registered')  group_id;
+       (select id from `groups` where caption = 'registered')  group_id;
 insert into group_user (user_id, group_id)
 select (select id from users where email = 'login4@mail.ru') user_id,
-       (select id from groups where caption = 'registered')  group_id;
+       (select id from `groups` where caption = 'registered')  group_id;
 insert into group_user (user_id, group_id)
 select (select id from users where email = 'login5@mail.ru') user_id,
-       (select id from groups where caption = 'registered')  group_id;
+       (select id from `groups` where caption = 'registered')  group_id;
 insert into group_user (user_id, group_id)
 select (select id from users where email = 'login1@mail.ru')          user_id,
-       (select id from groups where caption = 'access_write_message') group_id;
+       (select id from `groups` where caption = 'access_write_message') group_id;
 insert into group_user (user_id, group_id)
 select (select id from users where email = 'login2@mail.ru')          user_id,
-       (select id from groups where caption = 'access_write_message') group_id;
+       (select id from `groups` where caption = 'access_write_message') group_id;
 insert into group_user (user_id, group_id)
 select (select id from users where email = 'login3@mail.ru')          user_id,
-       (select id from groups where caption = 'access_write_message') group_id;
+       (select id from `groups` where caption = 'access_write_message') group_id;
 
 insert into color (hex_value)
 values ('00ffff') /*aqua*/,

@@ -26,7 +26,7 @@ create unique index user_email_uinx
 create unique index user_phone_uinx
   on users (phone);
 
-create table groups
+create table `groups`
 (
   id int unsigned auto_increment not null comment 'идентификатор группы',
   caption nvarchar(255) not null comment 'название группы',
@@ -36,7 +36,7 @@ create table groups
 );
 
 create unique index group_caption_uinx
-  on groups (caption);
+  on `groups` (caption);
 
 create table group_user
 (
@@ -45,7 +45,7 @@ create table group_user
   constraint group_user_pk
     primary key (user_id, group_id),
   constraint group_user_g_fk
-    foreign key (group_id) references groups (id)
+    foreign key (group_id) references `groups` (id)
       on update cascade on delete cascade,
   constraint group_user_u_fk
     foreign key (user_id) references users (id)
