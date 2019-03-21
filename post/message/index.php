@@ -4,6 +4,9 @@ $postPage = function ($user) {
     require $_SERVER['DOCUMENT_ROOT'] . '/db/query/msg.php';
     require $_SERVER['DOCUMENT_ROOT'] . '/post/message/section.php';
 
+    function isRead($message) {
+        return false === filter_var($message['isRead'], FILTER_VALIDATE_BOOLEAN);
+    }
     // не прочитанные письма
     $msgId = $_GET['id'] ?? null;
     $message = findMessageDetail($msgId);
@@ -11,8 +14,8 @@ $postPage = function ($user) {
         // нельзя читать чужую переписку
         require $_SERVER['DOCUMENT_ROOT'] . '/include/post/messageNotFound.php';
     } else {
-        if (false === filter_var($message['isRead'], FILTER_VALIDATE_BOOLEAN)) {
-            messageSetRead($msgId);
+        if (isRead($message)) {
+            messageSetRead($message);
         }
         extract($message);
         require $_SERVER['DOCUMENT_ROOT'] . '/include/post/message.php';
