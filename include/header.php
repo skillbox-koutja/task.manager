@@ -14,6 +14,6 @@
     </div>
     <div style="clear: both"></div>
     <?php if (isset($mainMenu)): ?>
-        <?php renderMenu($mainMenu, 'top-menu'); ?>
-    <?php endif; ?>
+        <?php renderMenu($mainMenu, 'top-menu') ?>
+    <?php endif ?>
 </header>

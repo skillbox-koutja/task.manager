@@ -23,30 +23,30 @@ $sections = $sections ?? [];
     <select id="add_message-to"
             name="toId">
         <option disabled
-            <?= isset($data['toId']) ? '' : 'selected'; ?>
+            <?= isset($data['toId']) ? '' : 'selected' ?>
         >Выберите пользователя</option>
         <?php foreach ($receivers as $user): ?>
             <option
-                <?= ($data['toId'] === $user['id']) ? 'selected' : ''; ?>
-                    value="<?= $user['id']; ?>"
-            ><?= $user['lastName']; ?> <?= $user['firstName']; ?> <?= $user['middleName']; ?>
+                <?= ($data['toId'] === $user['id']) ? 'selected' : '' ?>
+                    value="<?= $user['id'] ?>"
+            ><?= $user['lastName'] ?> <?= $user['firstName'] ?> <?= $user['middleName'] ?>
             </option>
-        <?php endforeach; ?>
+        <?php endforeach ?>
     </select>
     <label for="add_message-section">Раздел:</label>
     <select id="add_message-section"
             name="sectionId">
         <option disabled
-            <?= isset($data['sectionId']) ? '' : 'selected'; ?>
+            <?= isset($data['sectionId']) ? '' : 'selected' ?>
         >Выберите раздел
         </option>
         <?php foreach ($sections as $section): ?>
-            <option style="background-color: <?= $section['bg-color']; ?>"
-                <?= ($data['sectionId'] === $section['id']) ? 'selected' : ''; ?>
-                    value="<?= $section['id']; ?>"
-            ><?= $section['caption']; ?>
+            <option style="background-color: <?= $section['bg-color'] ?>"
+                <?= ($data['sectionId'] === $section['id']) ? 'selected' : '' ?>
+                    value="<?= $section['id'] ?>"
+            ><?= $section['caption'] ?>
             </option>
-        <?php endforeach; ?>
+        <?php endforeach ?>
     </select>
     <br><br>
     <input type="submit" name="add_message-submit" value="Отправить">

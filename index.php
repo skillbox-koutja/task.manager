@@ -22,21 +22,21 @@ $loginUrlAction = $urlPath . '?login=true';
 $logoutUrlAction = $urlPath . '?logout=true';
 ?>
 
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/include/header.php'; ?>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/include/header.php' ?>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td class="left-column-index">
-                <h1><?= getActiveSectionTitle($mainMenu, $activeSectionIndex); ?></h1>
+                <h1><?= getActiveSectionTitle($mainMenu, $activeSectionIndex) ?></h1>
                 <p>Вести свои личные списки, например покупки в магазине, цели, задачи и многое другое. Делится списками
                     с
                     друзьями и просматривать списки друзей.</p>
                 <?php if ($successAuth): ?>
                     <a href="/post/">Почта</a>
                 <br>
-                    <a href="<?= $logoutUrlAction; ?>">Выйти</a>
+                    <a href="<?= $logoutUrlAction ?>">Выйти</a>
                 <?php else: ?>
-                    <a href="<?= $loginUrlAction; ?>">Перейти к авторизации</a>
-                <?php endif; ?>
+                    <a href="<?= $loginUrlAction ?>">Перейти к авторизации</a>
+                <?php endif ?>
             </td>
             <?php if (filter_var($_GET['login'] ?? false, FILTER_VALIDATE_BOOLEAN)): ?>
                 <td class="right-column-index">
@@ -50,15 +50,15 @@ $logoutUrlAction = $urlPath . '?logout=true';
                     </div>
                     <div class="index-auth">
                         <?php if ($successAuth): ?>
-                            <p class="success"><?php include $_SERVER['DOCUMENT_ROOT'] . '/include/successAuth.php'; ?></p>
-                            <a href="<?= $urlPath; ?>">Перейти к главной странице</a>
+                            <p class="success"><?php include $_SERVER['DOCUMENT_ROOT'] . '/include/successAuth.php' ?></p>
+                            <a href="<?= $urlPath ?>">Перейти к главной странице</a>
                         <?php else: ?>
-                            <?php include $_SERVER['DOCUMENT_ROOT'] . '/include/login/loginForm.php'; ?>
-                        <?php endif; ?>
+                            <?php include $_SERVER['DOCUMENT_ROOT'] . '/include/login/loginForm.php' ?>
+                        <?php endif ?>
                     </div>
                 </td>
-            <?php endif; ?>
+            <?php endif ?>
         </tr>
     </table>
 
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/include/footer.php'; ?>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/include/footer.php' ?>
