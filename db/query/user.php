@@ -36,7 +36,7 @@ function findGroupsByUser($user)
        ag.id "id",
        ag.caption "caption",
        ag.description "description"
-from groups ag
+from `groups` ag
 inner join group_user aug on ag.id = aug.group_id
 where aug.user_id = ?
 ');
@@ -58,7 +58,7 @@ function findReceivers()
        au.middle_name "middleName"
 from users au
 left join group_user aug on au.id = aug.user_id
-left join groups ag on aug.group_id = ag.id
+left join `groups` ag on aug.group_id = ag.id
 where au.recv_email = :recv_email
 and ag.caption = :recv_group
 ');
